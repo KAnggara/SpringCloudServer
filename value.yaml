@@ -1,0 +1,59 @@
+# Default values for hello-app helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+namespace: dev
+
+image:
+  repository: https://ghcr.io
+  tag: dev
+  pullPolicy: Always
+
+deployment:
+
+application:
+  readinessInitialDelaySeconds: 60
+  readinessPeriodSeconds: 60
+  timeoutSeconds: 60
+  healthCheck: /actuator/health
+  containerPort: 8080
+  type: "spring"
+  env:
+    java_args: "--spring.profiles.active=dev --spring.cloud.config.fail-fast=true"
+
+service:
+  type: ClusterIP
+  javaOPTS: -Xms128m -Xmx256m
+  externalPort: 80
+  internalPort: 8080
+
+ingress:
+  host: scc.kanggara.my.id
+
+hpa:
+  maxReplicas: 1
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+configmap:
+  enabled: true
+  datamap:
+    SPRING_APPLICATION_NAME: "spring-cloud-config-server"
+    SPRING_PROFILES_ACTIVE: "git,dev"
+
+envFrom:
+  enabled: true
+  environment:
+    - configMapRef:
+        name: spring-cloud-config-server
+    - secretRef:
+        name: spring-cloud-config
