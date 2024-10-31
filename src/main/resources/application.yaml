@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: git@github.com:KAnggara/scc
+          uri: https://github.com/KAnggara/scc
           search-paths:
             - dev
             - prd
