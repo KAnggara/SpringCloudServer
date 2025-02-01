@@ -22,3 +22,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
       - uses: KAnggara/DevOps/mavenbuild@HEAD
+        with:
+          application-properties: ${{secret.APPLICATION_PROPERTIES}}
