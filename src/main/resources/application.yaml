@@ -5,7 +5,17 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/KAnggara/scc
+          uri: https://github.com
+          username: username
+          password: password
+          skipSslValidation: true
           search-paths:
-            - dev
-            - prd
+            - "{profile}"
+  security:
+    user:
+      name: name
+      password: password
+
+server:
+  port: 8888
+
