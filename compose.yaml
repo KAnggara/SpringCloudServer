@@ -1,0 +1,7 @@
+services:
+  scc:
+    image: KAnggara/scc:latest
+    container_name: scc
+    restart: always
+    ports:
+      - 8888:8888
