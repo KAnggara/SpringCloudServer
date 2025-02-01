@@ -1,0 +1,24 @@
+name: Build Image and Push to GHCR
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    name: Build
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: KAnggara/DevOps/mavenbuild@HEAD
