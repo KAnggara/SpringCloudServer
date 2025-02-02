@@ -5,14 +5,9 @@ on:
     branches: ["main"]
 
 jobs:
-  build-image:
+  mvn-build:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
-    name: Build and Push Image
+    name: Maven Build
     steps:
       - uses: actions/checkout@v4.2.2
       - uses: KAnggara/DevOps/mavenbuild@HEAD
@@ -20,7 +15,22 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           application-properties: ${{ secrets.APPLICATION_PROPERTIES }}
-      - name: Build
+
+  docker-build:
+    runs-on: ubuntu-24.04
+    needs: mvn-build
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    name: Build and Push Image
+    steps:
+      - uses: actions/download-artifact@v4.1.8
+        with:
+          name: ${{ github.event.repository.name }}
+          path: target/
+      - name: Build Docker Image then Push
         uses: KAnggara/DevOps/dockerbuild@HEAD
         with:
           username: ${{ github.actor }}
