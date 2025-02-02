@@ -23,4 +23,6 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - uses: KAnggara/DevOps/mavenbuild@HEAD
         with:
+          java-version: "17"
+          distribution: "temurin"
           application-properties: ${{ secrets.APPLICATION_PROPERTIES }}
