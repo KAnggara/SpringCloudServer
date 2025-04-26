@@ -16,7 +16,7 @@ jobs:
     name: Maven Test
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: KAnggara/DevOps/test/mvn@v0.1.3
+      - uses: KAnggara/DevOps/test/mvn@v0.1.4
   mavenbuild:
     runs-on: ubuntu-24.04
     needs: mavenTest
@@ -28,9 +28,10 @@ jobs:
     name: Build Maven
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: KAnggara/DevOps/mavenbuild@v0.1.3
+      - uses: KAnggara/DevOps/mavenbuild@v0.1.4
         with:
           application-properties: ${{ secrets.APPLICATION_PROPERTIES }}
+          retention-days: 1
   dockerBuild:
     runs-on: ubuntu-24.04
     needs: mavenbuild
@@ -46,7 +47,7 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}
           path: target/
-      - uses: KAnggara/DevOps/dockerbuild@feature-dockerBuild
+      - uses: KAnggara/DevOps/dockerbuild@v0.1.4
         with:
           registry: docker.io
           image_name: kanggara75/scc

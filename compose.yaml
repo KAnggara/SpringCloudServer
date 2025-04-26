@@ -4,7 +4,7 @@ services:
     container_name: scc
     restart: unless-stopped
     ports:
-      - 8888:8888
+      - "8080:8080"
     environment:
       GENERIC_TIMEZONE: Asia/Jakarta
       TZ: Asia/Jakarta
