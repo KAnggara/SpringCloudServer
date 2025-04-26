@@ -1,0 +1,50 @@
+name: Maven Build and Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mavenTest:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    name: Maven Test
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: KAnggara/DevOps/test/mvn@v0.1.3
+  mavenbuild:
+    runs-on: ubuntu-24.04
+    needs: mavenTest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    name: Build Maven
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: KAnggara/DevOps/mavenbuild@v0.1.3
+        with:
+          path: action_test/mvn
+  dockerBuild:
+    runs-on: ubuntu-24.04
+    needs: mavenbuild
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    name: Build and Push to Docker Hub
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: KAnggara/DevOps/dockerbuild@v0.1.3
+        with:
+          registry: docker.io
+          image_name: kanggara75/scc
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
