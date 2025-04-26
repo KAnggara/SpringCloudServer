@@ -1,0 +1,29 @@
+name: Auto Make Private Repo
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Run Every 30 Minutes
+  workflow_dispatch:
+jobs:
+  make-private:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Repository Visibility
+        id: check_visibility
+        run: |
+          VISIBILITY=$(gh repo view $GITHUB_REPOSITORY --json visibility -q '.visibility')
+          echo "Current visibility: $VISIBILITY"
+          echo "VISIBILITY=$VISIBILITY" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Change to Private if Public
+        if: env.VISIBILITY == 'PUBLIC'
+        run: |
+          gh repo edit $GITHUB_REPOSITORY --visibility private --accept-visibility-change-consequences
+          echo "Repository has been set to private."
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
