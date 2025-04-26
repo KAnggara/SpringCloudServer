@@ -1,7 +1,10 @@
 services:
   scc:
-    image: KAnggara/scc:latest
+    image: KAnggara75/scc:latest
     container_name: scc
-    restart: always
+    restart: unless-stopped
     ports:
       - 8888:8888
+    environment:
+      GENERIC_TIMEZONE: Asia/Jakarta
+      TZ: Asia/Jakarta

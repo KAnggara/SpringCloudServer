@@ -13,9 +13,5 @@ spring:
             - "{profile}"
   security:
     user:
-      name: name
-      password: password
-
-server:
-  port: 8888
-
+      name: kanggara75
+      password: no4pVY5DFp
