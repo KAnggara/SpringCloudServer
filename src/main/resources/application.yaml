@@ -14,4 +14,4 @@ spring:
   security:
     user:
       name: kanggara75
-      password: no4pVY5DFp
+      password: mockPassword
